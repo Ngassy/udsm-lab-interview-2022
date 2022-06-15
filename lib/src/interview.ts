@@ -22,6 +22,45 @@ export function getProcessedData(
       },
     ]
    */
+   
+   
+    // Combining and Removing data items with reporting rate less than 50
+   const finalData = yearTwoData.concat(yearOneData,yearThreeData)
+   const filteredDataItems = finalData.filter((obj:any) => {
+   	return obj["reportingRate"] >= 50;
+   
+   });
+   
+   //Grouping relevant data with the same code inorder to Compute average
+   var groups = filteredDataItems.reduce(function(acc:any,obj:any){
+	var data = obj.code;
+		if(acc[data]){
+			if(obj.value) {
+				(acc[data].value += obj.value);
+				++acc[data].Average;
+			}
+		}
+		else{
+			acc[data] = obj;
+			acc[data].Average = 1;
+		}
+		return acc;
+	}, {});
+	
+	
+	//Computing the average for grouped and combined data to arrive for a single value
+	var result = Object.keys(groups).map(function (data:any) {
+    	groups[data].Average = Math.round(groups[data].value/groups[data].Average);
+    	
+    	const finalValue = {
+    	"value": groups[data].Average,
+    	"name": groups[data].name,
+    	"code": groups[data].code
+    	};
+    	
+    	return finalValue
+    	
+	}); 
 
-  return;
+  return result;
 }
