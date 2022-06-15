@@ -60,7 +60,7 @@ export function getProcessedData(
     	
     	return finalValue
     	
-	}); 
-
+	});
+	console.log(result);
   return result;
 }
